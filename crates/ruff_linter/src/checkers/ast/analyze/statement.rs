@@ -1181,6 +1181,9 @@ pub(crate) fn statement(stmt: &Stmt, checker: &mut Checker) {
             if checker.enabled(Rule::SliceToRemovePrefixOrSuffix) {
                 refurb::rules::slice_to_remove_affix_stmt(checker, if_);
             }
+            if checker.enabled(Rule::EmptyIfStatement) {
+                ruff::rules::empty_if_statement(checker, if_); 
+            }
             if checker.enabled(Rule::TooManyBooleanExpressions) {
                 pylint::rules::too_many_boolean_expressions(checker, if_);
             }
