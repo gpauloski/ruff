@@ -1,7 +1,10 @@
-use ruff_diagnostics::{Violation, Diagnostic};
+use ruff_diagnostics::{Violation, Diagnostic, Fix, Edit};
 use ruff_macros::{derive_message_formats, violation};
 use ruff_python_ast::{self as ast, Stmt};
+use ruff_text_size::Ranged;
+
 use crate::checkers::ast::Checker;
+
 
 /// ### What is does
 /// TODO
@@ -36,5 +39,9 @@ pub(crate) fn empty_if_statement(
         }
     }
 
-    checker.diagnostics.push(Diagnostic::new(EmptyIfStatement, *range));
+    let mut diagnostic = Diagnostic::new(EmptyIfStatement, *range);
+
+    diagnostic.set_fix(Fix::unsafe_edit(Edit::range_deletion(diagnostic.range())));
+
+    checker.diagnostics.push(diagnostic);
 }
